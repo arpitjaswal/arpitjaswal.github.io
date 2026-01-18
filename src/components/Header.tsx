@@ -16,7 +16,7 @@ const Header  = ()=>{
     const navigate = useNavigate();
     const { width } = useWindowDimensions();
     const [isMobile,setIsMobile] = useState(false);
-    const [isOpen,setIsOpen] = useState(false)
+    const [isOpen,setIsOpen] = useState(true)
   useEffect(() => {
     if (width < 600) {
       setIsMobile(true)
