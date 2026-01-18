@@ -1,37 +1,96 @@
 import { Routes,Route,useNavigate, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import About from "./About"
 import Contact from "./Contact";
 import Blogs from "./Blog";
 import Projects from "./Projects";
 import Books from "./Books";
+import { FcHome } from "react-icons/fc";
+import { FcOpenedFolder } from "react-icons/fc";
+
+import useWindowDimensions from "../hooks/useWindowDimensions";
+
 
 const Header  = ()=>{
     const tabs = ["about","projects","books","blog","contact"];
     const navigate = useNavigate();
-    const notHovered = {cursor:"pointer",fontFamily:"BBH Hegarty",color:"red",fontWeight:"100"}
-    const Hovered = {cursor:"pointer",fontFamily:"BBH Hegarty",color:"red",fontWeight:"100"}
-    const [isHovered,setIsHovered] = useState(false);
-
+    const { width } = useWindowDimensions();
+    const [isMobile,setIsMobile] = useState(false);
+    const [isOpen,setIsOpen] = useState(false)
+  useEffect(() => {
+    if (width < 600) {
+      setIsMobile(true)
+    } else if (width < 1200) {
+     setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }, [width]);
+  
     return (
         <>
-            <div style={{width:"100vw",display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
-                <div className="whole-header" style={{width:"40vw",display:"flex",justifyContent:"space-evenly",alignItems:"center",backgroundColor:"lightgray", borderRadius:"12px",marginBottom:"25px"}}>
+            <div>
+                {isMobile?(<>
+             
+                    {
+                        isOpen?(
+                            <>
+                                <div style={{display:"flex",justifyContent:"center"}}>
+                              
+                                <FcHome size={70} onClick={()=>{
+                                    console.log("home")
+                                    setIsOpen(prev=>!prev)
+                                }}/>
+                            </div>
+                            </>
+                        ):(
+                            <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
+                                  <FcOpenedFolder size={70} onClick={()=>{
+                                    console.log("folder")
+                                    setIsOpen(prev=>!prev)
+                                }}/>
+                                <div style={{
+                                    display:"flex",
+                                    height:"100%",
+                                    justifyContent:"center",
+                                    alignItems:"flex-start",
+                                    backgroundColor:"gray",
+ position: "fixed",
+    top: "8%",
+    left: 0,
+    zIndex: 999,
+    width: "100%"
+                                }}> <div className="whole-header" style={{width:"20vw",display:"flex",justifyContent:"space-evenly",alignItems:"center",flexDirection:"column"}}>
                     {tabs.map((element)=>(
-                        <p style={isHovered?Hovered:notHovered} onClick={()=>{
+                        <p style={{cursor:"pointer",fontFamily:"BBH Hegarty",color:"red",fontWeight:"100"}} onClick={()=>{
                             const path = "/"+element;
                             navigate(path)
-                        }}
-                        onMouseEnter={()=>{
-                            setIsHovered(true);
-                        }}
-                        onMouseLeave={()=>{
-                            setIsHovered(false);
+                            setIsOpen(prev=>!prev)
+                        }}>{element}</p>
+                    
+                    ))}
+
+                </div></div>
+                            </div>
+                            
+                        )
+                    }
+                  
+                </>
+                ):(
+                    <div style={{width:"100vw",display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
+                <div className="whole-header" style={{width:"20vw",display:"flex",justifyContent:"space-evenly",alignItems:"center"}}>
+                    {tabs.map((element)=>(
+                        <p style={{cursor:"pointer",fontFamily:"BBH Hegarty",color:"red",fontWeight:"100"}} onClick={()=>{
+                            const path = "/"+element;
+                            navigate(path)
                         }}>{element}</p>
                     
                     ))}
 
                 </div>
+            </div>
+                )}
             </div>
             <Routes>
                 <Route path="/" element={<Navigate to="/about" replace={true} />} />
