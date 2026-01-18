@@ -35,6 +35,7 @@ const Header  = ()=>{
             </div>
             <Routes>
                 <Route path="/" element={<Navigate to="/about" replace={true} />} />
+                <Route path="/" element={<Navigate to="/about" replace={true} />} />
                 <Route path="/about" element={<About/>} />
                 <Route path="/projects" element={<Projects/>} />
                 <Route path="/books" element={<Books/>} />
